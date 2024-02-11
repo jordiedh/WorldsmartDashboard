@@ -26,7 +26,7 @@ import * as timeUtil from './timeUtil.js';
 
 
 const app = express();
-let port = 4222;
+const port = process.env.PORT || 4222;
 let superuser = "N/A";
 
 const __filename = fileURLToPath(import.meta.url); // Get the directory URL
