@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!--BOOTSTRAP-->
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="181">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--NAME/ICON-->
+  <link rel="icon" type="image/x-icon" href="/img/worldsmart.png">
+  <title>WorldSmart Overview</title>
+
+  <!--CSS/BOOTSTRAP-->
+  <link rel="stylesheet" href="/css/stylesheet.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+  integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+  integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+</script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <%- include('../views/header'); %>
+  <div id="warning" aria-live="polite" aria-atomic="true" style="position: fixed; min-height: 200px; z-index: -1; padding-left: 900px; padding-top: 80px; min-width: 400px; opacity: 0;">
+    <div class="toast" style="position: absolute; top: 0; right: 0;">
+      <div class="toast-header">
+        <img src="https://static-00.iconduck.com/assets.00/warning-sign-emoji-512x512-55luoui7.png" class="rounded mr-2" style="height:15px">
+        <strong class="mr-auto">WARNING</strong>
+        </button>
+      </div>
+      <div class="toast-body">
+        You cannot delete the last element of this list.
+      </div>
+    </div>
+  </div>
+  
+  <div style="margin-left: 15px; margin-top: 10px;">
+      <form id="form" action="/leaveadd/" method="POST">
+        <fieldset class="inputs-set" id="leave-list" class="input-field">
+          <div id="divsContainer">
+          <div id="duplicateThis">
+            <div class="input-group mb-3" style="max-width: 600px">
+              <!--
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Select Agent</button>
+              <ul class="dropdown-menu">
+                <% Object.keys(away).forEach(agent => {%>
+                  <li><a class="dropdown-item" href="#"><%= agent %></a></li>
+                <% }) %>
+              </ul>
+            -->
+            <select name="agents" class="form-control" id="agent" form="form" required>
+              <option value="" selected disabled hidden>Select Agent</option>
+              <% Object.keys(away).forEach(agent => {%>
+                <option><%= agent %></option>
+              <% }) %>
+            </select>
+              <input type="date" name="leave_field" class="input-field" aria-label="Annual Leave" required>
+              <input type="date" name="leave_field2" class="input-field" aria-label="Annual Leave" required>
+              <button class="btn-add-input" onclick="duplicate()" type="button">
+                +
+              </button>
+              <button id="rem" class="btn-del-input" onclick="remove(this)" type="button">
+                -
+              </button>
+            </div>
+          </div>
+        </div>
+        </fieldset>
+      <input class="btn btn-primary btn-lg" type="submit" value="Save">
+    </form>
+  </div>
+
+    <script>
+$( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+
+Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+}
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+    for(var i = this.length - 1; i >= 0; i--) {
+        if(this[i] && this[i].parentElement) {
+            this[i].parentElement.removeChild(this[i]);
+        }
+    }
+}
+
+var i = 0;
+var tooltip = document.getElementById("warning");
+var nowFading = Date.now();
+
+function remove(element) {
+  if(element.parentNode.parentNode.parentNode.childElementCount > 1)
+    element.parentNode.parentNode.remove()
+  else {
+    warning.style.opacity = "1";
+    warning.style.filter = 'alpha(opacity=100)'
+    nowFading = Date.now()
+    setTimeout(function() {
+      if(Date.now() - nowFading >= 4900) {
+      warning.style.opacity = '0';
+      }
+    }, 5000);
+  }
+}
+
+function duplicate() {
+var original = document.getElementById('divsContainer').firstElementChild;
+    var clone = original.cloneNode(true); // "deep" clone
+    clone.id = "d" + ++i; // there can only be one element with an ID
+    original.parentNode.appendChild(clone);
+}
+
+      const myForm = document.getElementById("leave-list");
+
+      function addLeaveField() {
+        // Create elements
+        const nef_wrapper = document.createElement("div");
+        const nef = document.createElement("input");
+        const btnAdd = document.createElement("button");
+        const btnDel = document.createElement("button");
+
+        // Add Class to main wrapper
+        nef_wrapper.classList.add("leave-input__w");
+
+        // set button ADD
+        btnAdd.type = "button";
+        btnAdd.classList.add("btn-add-input");
+        btnAdd.innerText = "+";
+        btnAdd.setAttribute("onclick", "addLeaveField()");
+
+        // set button DEL
+        btnDel.type = "button";
+        btnDel.classList.add("btn-del-input");
+        btnDel.innerText = "-";
+
+        // set Input field
+        nef.type = "leave";
+        nef.name = "leave_field";
+        nef.setAttribute("required", "");
+        nef.classList.add("input-field");
+
+        //append elements to main wrapper
+        nef_wrapper.appendChild(nef);
+        nef_wrapper.appendChild(btnAdd);
+        nef_wrapper.appendChild(btnDel);
+
+        // append element to DOM
+        myForm.appendChild(nef_wrapper);
+        btnDel.addEventListener("click", removeLeaveField);
+      }
+
+      //remove element from DOM
+      function removeLeaveField(el) {
+        const field = el.target.parentElement;
+        field.remove();
+      }
+    </script>
+</body>
+
+</html>
