@@ -267,8 +267,11 @@ app.get('/leavelist', (req, res) => {
 	});
 })
 
+app.get('/disclaimer', (req, res) => {
+	res.render('disclaimer')
+})
+
 app.get('/remove', (req, res) => {
-	let id = req.query.id;
 	let queryDefault = {
 		past: '0',
 		current: '1',
@@ -279,115 +282,20 @@ app.get('/remove', (req, res) => {
 	if(req.query.current != undefined) queryDefault.current = validateZeroOne(req.query.current);
 	if(req.query.future != undefined) queryDefault.future = validateZeroOne(req.query.future);
 	if(req.query.agent != undefined) queryDefault.agent = validateAgent(req.query.agent);
-	if(id == undefined) {
-		res.redirect('/leavelist?past=' + queryDefault.past + '&current=' + queryDefault.current + '&future=' + queryDefault.future + '&agent=' + queryDefault.agent)
-		return;
-	}
-	let sql = `DELETE FROM annual WHERE annualId = ?`;
-		let input = [req.query.id]
-		db.run(sql, input, function (err) {
-			if (err) {
-				logError(err);
-				return;
-			}
-			logInfo(`Row(s) deleted: ${this.changes}`)
-		})
-		refreshAnnualList();
-		setTimeout(function () {
-			res.redirect('/leavelist?past=' + queryDefault.past + '&current=' + queryDefault.current + '&future=' + queryDefault.future + '&agent=' + queryDefault.agent)
-		}, 2000)
-		return;
+	res.redirect('/leavelist?past=' + queryDefault.past + '&current=' + queryDefault.current + '&future=' + queryDefault.future + '&agent=' + queryDefault.agent)
+		
 })
 
 app.post('/leaveadd', (req, res) => {
-	let data = req.body;
-	let dataPoints = 1;
-	if(typeof data.agents != 'string' && !(data.agents instanceof String)) 
-		dataPoints = data.agents.length;
-	res.redirect('/leavelist')
-	for(let i = 0; i < dataPoints; i++) {
-		let agent = data.agents[i];
-		if(dataPoints == 1) agent = data.agents;
-		let startDate = data.leave_field[i];
-		if(dataPoints == 1) startDate = data.leave_field;
-		let endDate = data.leave_field2[i];
-		if(dataPoints == 1) endDate = data.leave_field2;
-		let start = startDate.split("-")
-		let end = endDate.split("-")
-		let startDateConverted = timeUtil.toEpoch(start[2] + "/" + start[1] + "/" + start[0])
-		let endDateConverted = timeUtil.toEpochPlusOneDay(end[2] + "/" + end[1] + "/" + end[0])
-		logInfo("Adding leave for " + agent + ". Starting on " + startDate + ", ending on " + endDate + "!")
-		let sql = `INSERT INTO annual (agent, startDate, endDate) VALUES (?, ?, ?)`;
-		let input = [agent, startDateConverted, endDateConverted]
-		db.run(sql, input, function (err) {
-			if (err) {
-				logError(err);
-				return;
-			}
-			logInfo(`Row(s) inserted: ${this.changes}`)
-		})
-	}
-	agentUtil.refreshAgentCounts();
-	refreshAnnualList();
-	setTimeout(function () {
-		sortAgents(agentUtil.agentData.ticketCounts)
-	}, 3000)
+	res.redirect('/')
 })
 
 app.post('/sick', (req, res) => {
-	let data = req.body;
-	let sql = `UPDATE sick SET sick = ? WHERE agent = ?`;
-	let sick = 0;
-	if (data.sick != null) sick = 1;
-	else sick = 0;
-	let input = [sick, data.agent]
-	db.run(sql, input, function (err) {
-		if (err) {
-			logError(err);
-			return;
-		}
-		logInfo(`Row(s) updated: ${this.changes}`)
-	})
-	agentUtil.refreshAgentCounts();
-	setTimeout(function () {
-		sortAgents(agentUtil.agentData.ticketCounts)
-	}, 3000)
-	res.status(204).send();
+	res.redirect('/')
 })
 
 app.post('/', (req, res) => {
-	let data = req.body;
-
-	db.all(`SELECT * FROM lunch WHERE date='${timeUtil.getDate()}' AND timeEnd=0 AND agent='${data.agent}'`, [], (err, rows) => {
-		if (rows.length != 0) {
-			let sql = `UPDATE lunch SET timeEnd = ? WHERE lunchId = ?`;
-			let input = [Date.now(), rows[0].lunchId]
-			db.run(sql, input, function (err) {
-				if (err) {
-					logError(err);
-					return;
-				}
-				logInfo(`Row(s) updated: ${this.changes}`)
-			})
-		} else {
-			let sql = `INSERT INTO lunch (agent, date, timeStart, timeEnd) VALUES (?, ?, ?, ?)`;
-			let input = [data.agent, timeUtil.getDate(), Date.now(), 0]
-			db.run(sql, input, function (err) {
-				if (err) {
-					logError(err);
-					return;
-				}
-				logInfo(`Row(s) updated: ${this.changes}`)
-			})
-		}
-	})
-	setTimeout(function () {
-		agentUtil.refreshSick();
-
-	}, 300)
-	setTimeout(function () {
-		res.redirect('back');
-	}, 1000)
+	res.redirect('/')
 })
 
 app.get('*', function(req, res){

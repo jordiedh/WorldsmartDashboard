@@ -62,7 +62,6 @@ export function sortMap(map) {
 export async function refreshSick() {
 
     Object.keys(agentData.ticketCounts).forEach(agent => {
-        agentData.away[agent] = 0;
         if (agentData.away[agent] < 0) agentData.ticketCounts[agent] = -1
     });
     app.db.all(`SELECT * FROM lunch WHERE date = "${timeUtil.getDate()}" AND timeEnd=0`, [], (err, rows) => {
@@ -109,6 +108,7 @@ export async function refreshSick() {
         rows.forEach((row) => {
             logInfo(row.agent + " is sick today.");
             agentData.away[row.agent] = -1;
+            agentData.ticketCounts[row.agent] = -1;
         })
 
     })
@@ -124,6 +124,7 @@ export async function refreshSick() {
         rows.forEach((row) => {
             logInfo(row.agent + " is on annual today.");
             agentData.away[row.agent] = -2;
+            agentData.ticketCounts[row.agent] = -1;
         })
 
     })
@@ -137,7 +138,7 @@ export async function refreshAgentCounts() {
 
     for(var i = 0; i < maps["people"].length; i++) {
         let agent = maps["people"][i]
-        agentData.percentageOfShift[agent.name] = timeSinceStarted(agent.name) / 510 * 100
+        agentData.percentageOfShift[agent.name] = 50
         let viewID = agent.closedView;
         if (views.indexOf(viewID) == -1) views.push(viewID)
     }

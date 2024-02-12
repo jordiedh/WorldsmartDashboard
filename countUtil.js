@@ -57,7 +57,7 @@ let settings = {mode: "get", headers: headers}
 export function getViewCount(id, callback) {
 
     logInfo("Getting individual view count of view ID " + id)
-    fetch("https://worldsmartsupport.zendesk.com/api/v2/views/count.json?id=" + id, settings).then(res => res.json()).then((json) => {
+    fetch("https://###.zendesk.com/api/v2/views/count.json?id=" + id, settings).then(res => res.json()).then((json) => {
         logInfo("View ID " + id + " returned a count of " +json.count.value)
         return callback(json.count.value);
 
@@ -73,7 +73,7 @@ export async function getManyViewCount(ids) {
     logInfo("Getting counts of view IDs " + ids.join(', '))
 	
 	try {
-    let res = await fetch("https://worldsmartsupport.zendesk.com/api/v2/views/count_many.json?ids=" + idString, settings);
+    let res = await fetch("https://###.zendesk.com/api/v2/views/count_many.json?ids=" + idString, settings);
     if(!res.ok) {
         const message = `An error has occured: ${res.status}`;
         throw new Error(message)
