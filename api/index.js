@@ -312,3 +312,5 @@ app.get('*', function(req, res){
   });
 
 app.listen(port, () => logInfo(`Server started on port ${port}.`))
+
+export default app;
