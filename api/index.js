@@ -15,9 +15,9 @@ import {
 } from './logger.js';
 import {
 	ticketCounts,
-	refreshCounts,
+	//refreshCounts,
 	getCountColour,
-	refreshNewCounts
+	//refreshNewCounts
 } from './countUtil.js';
 import * as agentUtil from './agentUtil.js';
 import bodyParser from 'body-parser';
