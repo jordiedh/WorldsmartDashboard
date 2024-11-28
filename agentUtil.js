@@ -3,8 +3,9 @@ import {
     logInfo
 } from "./logger.js";
 import * as timeUtil from "./timeUtil.js";
-
-import maps from './maps.json';
+import maps from './maps.json' with {
+    type: 'json'
+};
 import * as app from './app.js';
 
 export let agentData = {

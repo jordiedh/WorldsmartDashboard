@@ -5,8 +5,9 @@ import path from 'path';
 import {
 	fileURLToPath
 } from 'url';
-
-import maps from './maps.json';
+import maps from './maps.json' with {
+    type: 'json'
+};
 import {
 	logInfo,
 	logError,

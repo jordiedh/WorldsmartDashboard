@@ -1,7 +1,9 @@
 import fetch from 'node-fetch';
 import {Headers} from 'node-fetch';
 
-import maps from './maps.json';
+import maps from './maps.json' with {
+    type: 'json'
+};
 import {logInfo, logError} from './logger.js';
 
 export let ticketCounts = {
