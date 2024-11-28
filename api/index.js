@@ -12,7 +12,7 @@ import {
 	logInfo,
 	logError,
 	newDay
-} from './logger.js';
+} from '../logger.js';
 import {
 	ticketCounts,
 	//refreshCounts,
@@ -143,7 +143,7 @@ function endOfDay() {
 			logInfo(`Row(s) updated: ${this.changes}`)
 		})
 	
-		fs.writeFile("./date.txt", date, (err) => {
+		fs.writeFile("../date.txt", date, (err) => {
 			if(err) {
 				logError(err);
 			} else {
