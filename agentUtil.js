@@ -6,7 +6,7 @@ import * as timeUtil from "./timeUtil.js";
 import maps from './maps.json' with {
     type: 'json'
 };
-import * as app from './app.js';
+import * as app from './index.js';
 
 export let agentData = {
     away: {}, awayPast: {}, ticketCounts: {}, percentageOfShift: {}, startTime: {}, endTime: {}, viewID: {}
