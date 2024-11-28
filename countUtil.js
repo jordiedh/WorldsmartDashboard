@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import {Headers} from 'node-fetch';
+
 import maps from './maps.json';
 import {logInfo, logError} from './logger.js';
 

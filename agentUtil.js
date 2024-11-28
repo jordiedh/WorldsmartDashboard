@@ -1,11 +1,9 @@
 import {
-    getManyViewCount
-} from "./countUtil.js";
-import {
     logError,
     logInfo
 } from "./logger.js";
 import * as timeUtil from "./timeUtil.js";
+
 import maps from './maps.json';
 import * as app from './app.js';
 
