@@ -5,7 +5,7 @@ import path from 'path';
 import {
 	fileURLToPath
 } from 'url';
-import maps from '../maps.json' with {
+import maps from './maps.json' with {
     type: 'json'
 };
 import {
@@ -18,11 +18,11 @@ import {
 	//refreshCounts,
 	getCountColour,
 	//refreshNewCounts
-} from '../countUtil.js';
-import * as agentUtil from '../agentUtil.js';
+} from './countUtil.js';
+import * as agentUtil from './agentUtil.js';
 import bodyParser from 'body-parser';
 import sqlite3 from 'sqlite3';
-import * as timeUtil from '../timeUtil.js';
+import * as timeUtil from './timeUtil.js';
 
 
 const app = express();
@@ -31,7 +31,7 @@ let superuser = "N/A";
 
 const __filename = fileURLToPath(import.meta.url); // Get the directory URL
 
-export let db = new sqlite3.Database('../agentInfo.db', sqlite3.OPEN_READWRITE, (err) => {
+export let db = new sqlite3.Database('./agentInfo.db', sqlite3.OPEN_READWRITE, (err) => {
 	if (err) {
 		logError(err)
 		return;
@@ -41,7 +41,7 @@ export let db = new sqlite3.Database('../agentInfo.db', sqlite3.OPEN_READWRITE, 
 })
 
 app.set('view engine', 'ejs'); // Set webpages to run from EJS
-app.use(express.static(path.dirname(__filename) + '/../public')); // Set the public view folder to /public (to get images, css, etc.)
+app.use(express.static(path.dirname(__filename) + '/public')); // Set the public view folder to /public (to get images, css, etc.)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: false
@@ -79,7 +79,7 @@ function init() {
 		sortAgents(agentUtil.agentData.ticketCounts) // sort the agents after 5 seconds to give time to get the counts
 	}, 5000)
 	// Use FS to read the srsu.txt to update the superuser text
-	fs.readFile('../srsu.txt', 'utf8', (err, data) => {
+	fs.readFile('./srsu.txt', 'utf8', (err, data) => {
 		if (err) {
 			logError("Super User file not found, couldn't set Super User.");
 			return;
@@ -114,7 +114,7 @@ function endOfDay() {
 	logInfo("Attempting End of Day.")
 	let date = timeUtil.toDateString(Date.now());
 	let storedDate = "";
-	fs.readFile('../date.txt', 'utf8', (err, data) => {
+	fs.readFile('./date.txt', 'utf8', (err, data) => {
 		if (err) {
 			console.error(err);
 			return;
