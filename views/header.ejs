@@ -1,0 +1,61 @@
+<!--NAVBAR-->
+<% let cl = "flash-red";
+if(ticketCounts["other"]["voicemail"] <= 0) cl="gray"%>
+<nav class="navbar navbar-expand-lg navbar-dark <%=cl%>" style="padding-left:15px; width: 100%; height: 70px">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div style="text-align: center;">
+    <a href="/"><button type="button" class="btn btn-light">🏠 Home</button></a>
+    <a href="/sick"><button type="button" class="btn btn-light">🤮 Sick Leave</button></a>
+    <a href="/leaveAdd"><button type="button" class="btn btn-light">➕ Add Annual Leave</button></a>
+    <a href="/leaveList"><button type="button" class="btn btn-light">✈️ View Annual Leave</button></a>
+    <button id="suButton" type="button" class="btn btn-primary suButton" onclick="copy(this)" data-toggle="tooltip" data-placement="bottom" title="Click to copy to clipboard">💾 <b>Super User: </b> <%= superuser %></5></button>
+    <% 
+  if(ticketCounts["other"]["voicemail"] > 0) {
+    %>
+    <a href="https://###.zendesk.com/agent/filters/6487686064153" target="_blank"><button type="button"
+        class="btn btn-danger"><b>🚨 Voicemails:</b> <%= ticketCounts["other"]["voicemail"] %></button></a>
+    <%} %>
+  </div>
+</nav>
+</div>
+
+<script>
+    function copy(el) {
+      // Get the text field
+      var copyText = "<%= superuser %>";
+
+      // Copy the text inside the text field
+      if(typeof(navigator.clipboard) == 'undefined') {
+        var textArea = document.createElement("textarea");
+        textArea.value = copyText;
+        textArea.style.position = "fixed";  //avoid scrolling to bottom
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('copied superuser')
+        } catch (err) {
+          console.log('error copying')
+        }
+
+        document.body.removeChild(textArea)
+      } else {
+        navigator.clipboard.writeText(copyText);
+      }
+
+      $(el).attr('title', 'Copied ✔️')
+          .tooltip('_fixTitle')
+          .tooltip('show');
+      
+    }
+
+    $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>

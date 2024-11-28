@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!--BOOTSTRAP-->
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="181">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--NAME/ICON-->
+  <link rel="icon" type="image/x-icon" href="/img/worldsmart.png">
+  <title>WorldSmart Overview</title>
+
+  <!--CSS/BOOTSTRAP-->
+  <link rel="stylesheet" href="/css/stylesheet.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+  </script>
+  <!--<style>
+    #nswOpen {
+      display: block;
+      z-index: 300;
+    }
+
+    #nswOpen:hover {
+      background-image: url(/img/ace.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+
+    #nswOpen:hover .child {
+      display: none;
+    }
+  </style>-->
+</head>
+
+<body>
+  <%- include('../views/header'); %>
+
+  <!-- OPEN / SOLVED -->
+  <div class="main-column-center" style="display: inline-flexbox; float: left;">
+
+    <% 
+      var halfSize="100";
+      Object.keys(ticketCounts).forEach(status => {
+		if(status == "other") return;
+	  let margintop = "0";
+    if(status == "new") margintop="60"
+    else if(status == "solved") margintop = "50"
+    var size = "180";
+    if(status == "new" || status=="urgent") size = halfSize;
+    let margintop2 = "0";
+    if(status == "solved") margintop2 = "50"
+    %>
+    <div class="row" style="display: inline-flex;">
+      <img src="/img/<%= status %>.png"
+        style="height: <%=size%>px; margin-top: <%=margintop%>px; margin-left: 30px; margin-right: 20px; ">
+      <% Object.keys(ticketCounts[status]).forEach(state => {%>
+      <% let textColour = "good";
+      let count = ticketCounts[status][state];
+      if(status == "solved") textColour = "white";
+      else if(status == "new" || status == "urgent") {
+        if(count >= 5) textColour="bad"
+        if(count > 0 && count < 5) textColour="attention"
+      }
+      else if(state == "total") {
+            if(count > 99 && count <= 125) textColour="attention"
+            else if (count > 125) textColour="bad"
+          } else if(count > 15) {
+              if(count < 30) textColour = "attention";
+              else textColour = "bad"
+          }
+          var nsw = "nswOpen"
+                      if(state != "nsw") nsw = ""%>
+      <div class="col" style="padding: 0 0 0 0; text-align:center; margin-top: <%=margintop2%>px">
+        <% if(status == "new") {%>
+        <div style="color:black; font-size: 40px; font-weight: 600;">
+          <% var st = state.toString();
+                if(st == "sa/nt") st = "sa";
+                if(st == "vic/tas") st = "vic";%>
+          <% if(st =="sa" && status == "new") {%>
+          <span id="<%= st %>" style="font-size:17px; padding-right: 50px;"></span>
+          <%} else {%>
+          <span id="<%= st %>" style="padding-right: 50px;"></span>
+          <% } %>
+        </div>
+        <%}%>
+          <a target="_blank" href="https://###.zendesk.com/agent/filters/<%=maps[status][state]%>">
+        <% 
+            var t = "dark";
+            if(state.startsWith("ex")) {
+              t = "white";
+            }
+            if(status == "new") {%>
+        <div class="card text-white mb-3"
+          style=" width: 150px; height: <%=halfSize%>px; margin-right: 30px; background-color: #48525c;">
+          <%} else if(status=="urgent") {%>
+          <div class="card text-white mb-3 "
+            style="width: 150px; height: <%=halfSize%>px; margin-right: 30px; background-color: #48525c;">
+            <%} else if(status=="open") {%>
+
+            <div id="<%=nsw%>" class="card text-white mb-3 bg-<%=t%>"
+              style=" width: 150px; height: 180px; margin-right: 30px;">
+              <%} else {%>
+              <div class="card text-white bg-<%=t%> mb-3" style=" width: 150px; height: 180px; margin-right: 30px;">
+                <%} %>
+
+                <center>
+
+                  <% if(!state.startsWith("ex")) {%>
+                  <h4 class="card-header child" style="font-size: 25px"><%= state.toUpperCase() %></h4>
+                  <% } %>
+
+                  <div class="card-body child">
+                    <% if(!state.startsWith("ex")) {%>
+                    <% if(status == "new" || status == "urgent") { %>
+                    <h2 class="<%= textColour %> child" style="font-size: 35px; margin-top: -26px;">
+                      <%= ticketCounts[status][state] %></h2>
+                    <% } else {%>
+                    <h2 class="<%= textColour %> child" style="font-size: 50px;"><%= ticketCounts[status][state] %></h2>
+                    <%}%>
+                  <% } %>
+                  </div>
+
+              </div>
+
+              </center>
+
+            </div>
+
+            </a>
+            <%}) %>
+
+          </div>
+          <% }) %>
+
+        </div>
+
+      </div>
+      <div>
+        <div class="card d-flex"
+          style="display: inline-block; width: 350px; float: left; vertical-align: middle; margin-left: 50px;">
+          <ul class="list-unstyled card-body mb-0 pb-0">
+            <% Object.keys(sortedAgents).forEach(agent => {%>
+            <%let stt = "black";%>
+            <%if(away[agent] > 0) {
+        stt = "#17a636";
+      }%>
+            <li class="media mb-3">
+              <div class="media-body">
+                <div style="display: flex; justify-content: space-between; margin-bottom: -10px;">
+                  <strong style="font-size: 13px;"><a target="_blank" style="color: <%=stt%>"
+                      href="https://###.zendesk.com/agent/filters/<%=views[agent]%>"><%= agent %></a></strong>
+                  <% 
+            
+            let stat = sortedAgents[agent];
+            let stat2 = "";
+            let t = (Date.now() - away[agent]) + awayPast[agent];
+            if(away[agent] == -1) stat = "🤮"
+            else if(away[agent] == -2) stat = "✈️"
+            else if(away[agent] != 0) {
+              var minutes = Math.floor((t / (1000 * 60)) % 60),
+                hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+
+              hours = hours;
+              minutes = (minutes < 10) ? "0" + minutes : minutes;
+
+              let time = hours + ":" + minutes;
+              let lunchEmojis = ["🍕","🍔","🍟","🥐","🥪","🌮","🌯","🍗","🥩","🍜","🍩"]
+              let vegEmojis = ["🥗","🍎","🥑","🥦","🥕"]
+              let vegAgents = ["Sheetal"]
+              if(agent == "Dylan") stat2 = "🃏 " + time + " "
+              else if(vegAgents.indexOf(agent) == -1) stat2 = lunchEmojis[Math.floor(Math.random() * lunchEmojis.length)] + " " + time + " ";
+              else stat2 = vegEmojis[Math.floor(Math.random() * vegEmojis.length)] + " " + time + " ";
+            }%>
+                  <p class="float-right pull-right" style="padding-left: 180px; font-size: 13px; font-weight: 700"><span
+                      style="color: #17a636"><%=stat2%></span><span style="color: black;"><%=stat%></span></p>
+                </div>
+                <div class="progress mb-1" style="height: 8px;">
+                  <% let colorProgress = "#5260ff";
+            if(away[agent] < 0) colorProgress = "#404040";
+            else if(sortedAgents[agent] / (agentShift[agent] / 100 * 8.5) < 2.8 && sortedAgents[agent] / (agentShift[agent] / 100 * 8.5) >= 1.4) colorProgress = "#45c934"
+            else if(sortedAgents[agent] / (agentShift[agent] / 100 * 8.5) < 1.4 && sortedAgents[agent] / (agentShift[agent] / 100 * 8.5) >= 1.05) colorProgress = "#c99c34"
+            else if(sortedAgents[agent] / (agentShift[agent] / 100 * 8.5) < 1.05) colorProgress = "#c93434"
+            let perc = agentShift[agent];
+            if(away[agent] < 0) perc = 100;%>
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                    style="width: <%= perc%>%; background-color: <%=colorProgress%>" aria-valuenow="15"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </li>
+            <%})%>
+          </ul>
+        </div>
+
+        <div style="display: inline-block; width: 20px; float: left; margin-left: -5px; margin-top: 23px;">
+          <% Object.keys(sortedAgents).forEach(agent => {
+    if(away[agent] < 0) return;
+    let b = "success";
+    let p = "play"
+    if(away[agent] > 0) {
+      b = "danger"
+      p = "stop"
+    }%>
+          <form action "/" method="POST"><input type="hidden" id="agent" name="agent" value="<%=agent%>"><button
+              type="submit" class="btn btn-<%=b%>"
+              style="margin-bottom: 13.25px; align-self: center; height: 40px; width: 40px"><i
+                class="bi bi-<%=p%>-fill"></i></button></a>
+          </form>
+          <%});%>
+        </div>
+
+      </div>
+
+
+      <script>
+        function changeTimezone(date, ianatz) {
+
+          // suppose the date is 12:00 UTC
+          var invdate = new Date(date.toLocaleString('en-US', {
+            timeZone: ianatz
+          }));
+
+          // then invdate will be 07:00 in Toronto
+          // and the diff is 5 hours
+          var diff = date.getTime() - invdate.getTime();
+
+          // so 12:00 in Toronto is 17:00 UTC
+          return new Date(date.getTime() - diff); // needs to substract
+
+        }
+        var wa = document.getElementById('wa');
+        var qld = document.getElementById('qld');
+        var nsw = document.getElementById('nsw');
+        var sa = document.getElementById('sa');
+        var nt = document.getElementById('nt');
+        var vic = document.getElementById('vic');
+
+        function time() {
+          var times = ["Australia/Perth", "Australia/Brisbane", "Australia/Sydney", "Australia/Adelaide",
+            "Australia/Melbourne"
+          ]
+          var elements = [wa, qld, nsw, sa, vic]
+          for (i = 0; i < times.length; i++) {
+            var d = changeTimezone(new Date(), times[i]);
+            var s = d.getSeconds();
+            var m = d.getMinutes();
+            var h = d.getHours();
+            if (h > 12)
+              h = h - 12;
+            if (i == 3) {
+              var dD = changeTimezone(new Date(), "Australia/Darwin");
+              var sD = dD.getSeconds();
+              var mD = dD.getMinutes();
+              var hD = dD.getHours();
+              if (hD > 12)
+                hD = hD - 12;
+              var adelaide = h + ":" + ("0" + m).substr(-2);
+              var darwin = hD + ":" + ("0" + mD).substr(-2);
+              if (adelaide == darwin) elements[i].textContent = h + ":" + ("0" + m).substr(-2)
+              else elements[i].textContent = h + ":" + ("0" + m).substr(-2) + " / " + hD + ":" + ("0" + mD).substr(-2);
+            } else elements[i].textContent =
+              h + ":" + ("0" + m).substr(-2);
+            if (elements[3].textContent == elements[i].textContent.substring(3)) elements[i].textContent =
+              "";
+          }
+        }
+        time()
+        setInterval(time, 1000);
+      </script>
+</body>
+
+</html>

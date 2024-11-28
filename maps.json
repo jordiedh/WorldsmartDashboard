@@ -1,0 +1,55 @@
+{
+    "open": {
+        "wa": "9960463461913",
+        "vic/tas": "12318619198873",
+        "sa/nt": "12802314807321",
+        "qld": "12802313051545",
+        "nsw": "12775373077401",
+        "other": "12838932072985",
+        "total": "12836084840729"
+    },
+    "new": {
+        "wa": "25547430179993",
+        "vic/tas": "25547486733337",
+        "sa/nt": "25547489101721",
+        "qld": "25547552399897",
+        "nsw": "25547531252761"
+    },
+    "urgent": {
+        "wa": "25547661428633",
+        "vic/tas": "25547768759705",
+        "sa/nt": "25547718081305",
+        "qld": "25547833012889",
+        "nsw": "25547788621337"
+    },
+    "solved": {
+        "wa": "12840758340249",
+        "vic/tas": "12840820807833",
+        "sa/nt": "12840853400345",
+        "qld": "12840723291801",
+        "nsw": "12840754454553",
+        "other": "12840996942361",
+        "total": "12837174656281"
+    },
+    "people": [
+        {"name": "Dylan", "closedView": "15181760019865", "startTime": "8:00", "endTime": "16:30"},
+        {"name": "Cooper", "closedView": "21033052567577", "startTime": "8:30", "endTime": "17:00"},
+        {"name": "Ash", "closedView": "17414703845913", "startTime": "7:30", "endTime": "16:00"},
+        {"name": "Jacob", "closedView": "24902778584601", "startTime": "8:30", "endTime": "17:00"},
+        {"name": "Sheetal", "closedView": "17414706631065", "startTime": "8:30", "endTime": "17:00"},
+        {"name": "Cailin", "closedView": "17414747927833", "startTime": "7:00", "endTime": "15:30"},
+        {"name": "Caleb", "closedView": "15181648995097", "startTime": "6:30", "endTime": "15:00"},
+        {"name": "George", "closedView": "15181575919385", "startTime": "10:00", "endTime": "18:30"},
+        {"name": "Jye", "closedView": "20815737651993", "startTime": "11:00", "endTime": "19:30"},
+        {"name": "Ethan", "closedView": "15181798015129", "startTime": "9:00", "endTime": "17:30"},
+        {"name": "Adam", "closedView": "24902744598681", "startTime": "8:30", "endTime": "17:00"},
+        {"name": "Dale", "closedView": "17417440419097", "startTime": "8:30", "endTime": "17:00"},
+        {"name": "Daniel", "closedView": "15181699649945", "startTime": "8:00", "endTime": "16:30"},
+        {"name": "Patrick", "closedView": "26611981568409", "startTime": "8:00", "endTime": "16:30"},
+        {"name": "Brian", "closedView": "26611957182745", "startTime": "8:30", "endTime": "17:00"}
+
+    ],
+    "other": {
+        "voicemail": "6487686064153"
+    }
+}
